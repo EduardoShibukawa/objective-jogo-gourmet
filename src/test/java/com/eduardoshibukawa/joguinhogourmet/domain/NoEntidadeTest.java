@@ -18,7 +18,7 @@ class NoEntidadeTest {
 	void noEntidadeDevePossuirDescricaoCorreta() {
 		NoEntidade no = new NoEntidade("Bolo");
 		
-		assertEquals("É um(a) Bolo?", no.getPergunta());
+		assertEquals("É um(a) bolo?", no.getPergunta());
 	}	
 	
 }
