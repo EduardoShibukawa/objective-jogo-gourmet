@@ -54,16 +54,14 @@ class EngineJoguinhoTest {
 	}
 	
 	@Test
-	void quandoPerguntarSeDesejaJogarNovamenteEntaoMetodoDesejaJogarNovamenteDeveSerChamado() {
-		NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
+	void quandoRealizarAcaoEntaoMetodoDesejaJogarNovamenteDeveSerChamado() {		
+		EngineJoguinho engine = new EngineJoguinho(noPerguntaMock, viewJoguinhoMock);
 		
-		EngineJoguinho engine = new EngineJoguinho(noRaiz, viewJoguinhoMock);
-		
+		when(noPerguntaMock.getPergunta()).thenReturn("Teste");		
+		when(noPerguntaMock.isFilhoExistente(anyBoolean())).thenReturn(false);
 		when(viewJoguinhoMock.perguntar(anyString())).thenReturn(true);
-		when(viewJoguinhoMock.jogarNovamente()).thenReturn(false);
 
-		while (engine.isExecutando())
-			engine.realizarAcao();		
+		engine.realizarAcao();
 
 		verify(viewJoguinhoMock, times(1)).jogarNovamente();
 	}
@@ -72,15 +70,14 @@ class EngineJoguinhoTest {
 	void quandoCriarFilhoEntaoMetodoPerguntaNovaCaracteristicaEntidadeDeveSerChamado() {
 		NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
 
-		when(viewJoguinhoMock.perguntar(anyString())).thenReturn(false, false, true);
-		when(viewJoguinhoMock.jogarNovamente()).thenReturn(false);
+		when(viewJoguinhoMock.perguntar(anyString())).thenReturn(false, false);
 		when(viewJoguinhoMock.perguntarNovaCaracteristica(anyString(), anyString())).thenReturn("Azedo");
 		when(viewJoguinhoMock.perguntarNovaEntidade()).thenReturn("Limão");
 		
 		EngineJoguinho engine = new EngineJoguinho(noRaiz, viewJoguinhoMock);
-
-		while(engine.isExecutando())
-			engine.realizarAcao();
+		
+		engine.realizarAcao();
+		engine.realizarAcao();
 
 		verify(viewJoguinhoMock, times(1)).perguntarNovaEntidade();
 		verify(viewJoguinhoMock, times(1)).perguntarNovaCaracteristica(anyString(), anyString());
@@ -90,14 +87,13 @@ class EngineJoguinhoTest {
 	void quandoCriarFilhoComEntidadeNullEntaoErroValidacaoDeveSerChamadoComMensagemCorreta() {
 		NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
 
-		when(viewJoguinhoMock.perguntar(anyString())).thenReturn(false, false, true);
-		when(viewJoguinhoMock.jogarNovamente()).thenReturn(false);		
+		when(viewJoguinhoMock.perguntar(anyString())).thenReturn(false, false);
 		when(viewJoguinhoMock.perguntarNovaEntidade()).thenReturn(null);
 		
 		EngineJoguinho engine = new EngineJoguinho(noRaiz, viewJoguinhoMock);
 
-		while(engine.isExecutando())
-			engine.realizarAcao();
+		engine.realizarAcao();
+		engine.realizarAcao();
 
 		verify(viewJoguinhoMock, times(1)).erroValidacao("Não foi possivel criar filho: Entidade deve ser informada!");
 	}
@@ -107,13 +103,12 @@ class EngineJoguinhoTest {
 		NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
 
 		when(viewJoguinhoMock.perguntar(anyString())).thenReturn(false, false, true);
-		when(viewJoguinhoMock.jogarNovamente()).thenReturn(false);		
 		when(viewJoguinhoMock.perguntarNovaEntidade()).thenReturn(null);
 		
 		EngineJoguinho engine = new EngineJoguinho(noRaiz, viewJoguinhoMock);
 
-		while(engine.isExecutando())
-			engine.realizarAcao();
+		engine.realizarAcao();
+		engine.realizarAcao();
 
 		verify(viewJoguinhoMock, times(1)).erroValidacao("Não foi possivel criar filho: Entidade deve ser informada!");
 	}
@@ -123,15 +118,14 @@ class EngineJoguinhoTest {
 		NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
 
 		when(viewJoguinhoMock.perguntar(anyString())).thenReturn(false, false, true);
-		when(viewJoguinhoMock.jogarNovamente()).thenReturn(false);			
 		when(viewJoguinhoMock.perguntarNovaEntidade()).thenReturn("Limão");
 		when(viewJoguinhoMock.perguntarNovaCaracteristica(anyString(), anyString())).thenReturn(null);
 		
 		EngineJoguinho engine = new EngineJoguinho(noRaiz, viewJoguinhoMock);
 
 
-		while(engine.isExecutando())
-			engine.realizarAcao();
+		engine.realizarAcao();
+		engine.realizarAcao();
 
 		verify(viewJoguinhoMock, times(1)).erroValidacao("Não foi possivel criar filho: Característica deve ser informada!");
 	}
@@ -141,44 +135,41 @@ class EngineJoguinhoTest {
 		NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
 
 		when(viewJoguinhoMock.perguntar(anyString())).thenReturn(false, false, true);
-		when(viewJoguinhoMock.jogarNovamente()).thenReturn(false);			
 		when(viewJoguinhoMock.perguntarNovaEntidade()).thenReturn("Limão");
 		when(viewJoguinhoMock.perguntarNovaCaracteristica(anyString(), anyString())).thenReturn("");
 		
 		EngineJoguinho engine = new EngineJoguinho(noRaiz, viewJoguinhoMock);
 
-		while(engine.isExecutando())
-			engine.realizarAcao();
+		engine.realizarAcao();
+		engine.realizarAcao();
 
 		verify(viewJoguinhoMock, times(1)).erroValidacao("Não foi possivel criar filho: Característica deve ser informada!");
 	}
 	
 	@Test
-	void cenarioHappyDayMenorCaminho() {
+	void quandoJogoTerminarComRespostaCertaEntaoDeveParabenizar() {
 		NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
 
 		when(viewJoguinhoMock.perguntar(anyString())).thenReturn(true);
-		when(viewJoguinhoMock.jogarNovamente()).thenReturn(false);			
 			
 		EngineJoguinho engine = new EngineJoguinho(noRaiz, viewJoguinhoMock);
-
-		while(engine.isExecutando())
-			engine.realizarAcao();
+		
+		engine.realizarAcao();
+		engine.realizarAcao();
 		
 		verify(viewJoguinhoMock, times(1)).parabenizar();
 	}
 	
 	@Test
-	void cenarioHappyDayMenorCaminhoDeveTerPerguntandoDuasVezes() {
+	void quandoRealizarDuasAcoesEntaoDeveterPerguntandoDuasVezes() {
 		NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
 
 		when(viewJoguinhoMock.perguntar(anyString())).thenReturn(true);
-		when(viewJoguinhoMock.jogarNovamente()).thenReturn(false);			
 			
 		EngineJoguinho engine = new EngineJoguinho(noRaiz, viewJoguinhoMock);
 
-		while(engine.isExecutando())
-			engine.realizarAcao();
+		engine.realizarAcao();
+		engine.realizarAcao();
 		
 		verify(viewJoguinhoMock, times(2)).perguntar(anyString());
 	}
