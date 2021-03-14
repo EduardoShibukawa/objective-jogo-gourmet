@@ -7,7 +7,7 @@ package com.eduardoshibukawa.joguinhogourmet.domain;
 * @ author Eduardo Shibukawa
 */
 public class NoEntidade extends NoPergunta {
-	private String entidade;
+	final private String entidade;
 	
 	/**
 	* Construtor do nó caracteristica

@@ -7,7 +7,7 @@ package com.eduardoshibukawa.joguinhogourmet.domain;
 * @ author Eduardo Shibukawa
 */
 public abstract class NoPergunta {
-	private String pergunta;
+	final private String pergunta;
 	private NoPergunta noVerdadeiro;
 	private NoPergunta noFalso;
 
