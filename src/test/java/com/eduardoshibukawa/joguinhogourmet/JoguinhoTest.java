@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.eduardoshibukawa.joguinhogourmet.domain.EngineJoguinho;
 import com.eduardoshibukawa.joguinhogourmet.domain.NoCaracteristica;
 import com.eduardoshibukawa.joguinhogourmet.domain.NoEntidade;
-import com.eduardoshibukawa.joguinhogourmet.domain.EngineJoguinho.Acao;
 import com.eduardoshibukawa.joguinhogourmet.view.ViewJoguinho;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,175 +24,12 @@ class JoguinhoTest {
 
 	@Test
 	void quandoExecutarJogoEntaoCumprimentoDeveSerChamado() {
-		when(engineJoguinhoMock.getProximaAcao()).thenReturn(Acao.PARABENIZAR);
-		when(engineJoguinhoMock.desejaJogarNovamente()).thenReturn(false);
-
 		Joguinho joguinho = new Joguinho(engineJoguinhoMock);
 		joguinho.executar();
 
 		verify(engineJoguinhoMock, times(1)).cumprimentar();
 	}
 
-	@Test
-	void quandoExecutarJogoEntaoPerguntarDeveSerChamadaPeloMenosUmaVez() {
-		when(engineJoguinhoMock.getProximaAcao()).thenReturn(Acao.PARABENIZAR);
-		when(engineJoguinhoMock.desejaJogarNovamente()).thenReturn(false);
-
-		Joguinho joguinho = new Joguinho(engineJoguinhoMock);
-		joguinho.executar();
-
-		verify(engineJoguinhoMock, times(1)).perguntar();
-	}
-
-	@Test
-	void quandoExecutarJogoPossuirDuasAcoesEntaoPerguntarDeveSerChamadoDuasVez() {
-		when(engineJoguinhoMock.getProximaAcao()).thenReturn(Acao.AVANCAR, Acao.PARABENIZAR);
-		when(engineJoguinhoMock.desejaJogarNovamente()).thenReturn(false);
-
-		Joguinho joguinho = new Joguinho(engineJoguinhoMock);
-		joguinho.executar();
-
-		verify(engineJoguinhoMock, times(2)).perguntar();
-	}
-
-	@Test
-	void quandoExecutarJogoDesejandoFinalizarEntaoParabenizarDeveSerChamadaApenasUmaVez() {
-		when(engineJoguinhoMock.getProximaAcao()).thenReturn(Acao.AVANCAR, Acao.CRIAR_FILHO, Acao.AVANCAR,
-				Acao.PARABENIZAR);
-		when(engineJoguinhoMock.desejaJogarNovamente()).thenReturn(false);
-
-		Joguinho joguinho = new Joguinho(engineJoguinhoMock);
-		joguinho.executar();
-
-		verify(engineJoguinhoMock, times(1)).parabenizar();
-	}
-
-	@Test
-	void quandoExecutarJogoDesejandoFinalizarNaQuintaIteracaoEntaoParabenizarDeveSerChamadaCincoVezes() {
-		when(engineJoguinhoMock.getProximaAcao()).thenReturn(Acao.PARABENIZAR);
-		when(engineJoguinhoMock.desejaJogarNovamente()).thenReturn(true, true, true, true, false);
-
-		Joguinho joguinho = new Joguinho(engineJoguinhoMock);
-		joguinho.executar();
-
-		verify(engineJoguinhoMock, times(5)).parabenizar();
-	}
-
-	@Test
-	void quandoExecutarJogoDesejandoFinalizarEntaoDesejaJogarNovamenteDeveSerChamadoUmaVez() {
-		when(engineJoguinhoMock.getProximaAcao()).thenReturn(Acao.PARABENIZAR);
-		when(engineJoguinhoMock.desejaJogarNovamente()).thenReturn(false);
-
-		Joguinho joguinho = new Joguinho(engineJoguinhoMock);
-		joguinho.executar();
-
-		verify(engineJoguinhoMock, times(1)).desejaJogarNovamente();
-	}
-
-	@Test
-	void quandoExecutarJogoDesejandoFinalizarNaQuintaIteracaoEntaoDesejaJogarNovamenteDeveSerChamadaCincoVezes() {
-		when(engineJoguinhoMock.getProximaAcao()).thenReturn(Acao.PARABENIZAR);
-		when(engineJoguinhoMock.desejaJogarNovamente()).thenReturn(true, true, true, true, false);
-
-		Joguinho joguinho = new Joguinho(engineJoguinhoMock);
-		joguinho.executar();
-
-		verify(engineJoguinhoMock, times(5)).desejaJogarNovamente();
-	}
-
-	@Test
-	void quandoExecutarJogoCriandoFilhoUmaVezEntaoCriarFilhoDeveSerChamadaUmaVez() {
-		when(engineJoguinhoMock.getProximaAcao()).thenReturn(Acao.CRIAR_FILHO, Acao.AVANCAR, Acao.PARABENIZAR);
-		when(engineJoguinhoMock.desejaJogarNovamente()).thenReturn(false);
-
-		Joguinho joguinho = new Joguinho(engineJoguinhoMock);
-		joguinho.executar();
-
-		verify(engineJoguinhoMock, times(1)).criarFilho();
-	}
-
-	@Test
-	void quandoExecutarJogoCriandoFilhoDuasVezesEntaoCriarFilhoDeveSerChamadaDuasVezes() {
-		when(engineJoguinhoMock.getProximaAcao()).thenReturn(Acao.CRIAR_FILHO, Acao.AVANCAR, Acao.PARABENIZAR,
-				Acao.CRIAR_FILHO, Acao.AVANCAR, Acao.PARABENIZAR);
-		when(engineJoguinhoMock.desejaJogarNovamente()).thenReturn(true, false);
-
-		Joguinho joguinho = new Joguinho(engineJoguinhoMock);
-		joguinho.executar();
-
-		verify(engineJoguinhoMock, times(2)).criarFilho();
-	}
-
-	@Test
-	void quandoExecutarJogoComAcaoAvancarEntaoAvancarDeveSerChamado() {
-		when(engineJoguinhoMock.getProximaAcao()).thenReturn(Acao.AVANCAR, Acao.PARABENIZAR);
-		when(engineJoguinhoMock.desejaJogarNovamente()).thenReturn(false);
-
-		Joguinho joguinho = new Joguinho(engineJoguinhoMock);
-		joguinho.executar();
-
-		verify(engineJoguinhoMock, times(1)).avancar();
-	}
-
-	@Test
-	void quandoExecutarJogoComAcaoAvancarDuasVezesEntaoAvancarDeveSerChamadoDuasVezes() {
-		when(engineJoguinhoMock.getProximaAcao()).thenReturn(Acao.AVANCAR, Acao.AVANCAR, Acao.PARABENIZAR);
-		when(engineJoguinhoMock.desejaJogarNovamente()).thenReturn(false);
-
-		Joguinho joguinho = new Joguinho(engineJoguinhoMock);
-		joguinho.executar();
-
-		verify(engineJoguinhoMock, times(2)).avancar();
-	}
-
-	@Test
-	void quandoExecutarJogoDesejandoFinalizarEntaoIniciarNãoDeveSerChamado() {
-		when(engineJoguinhoMock.getProximaAcao()).thenReturn(Acao.PARABENIZAR);
-		when(engineJoguinhoMock.desejaJogarNovamente()).thenReturn(false);
-
-		Joguinho joguinho = new Joguinho(engineJoguinhoMock);
-		joguinho.executar();
-
-		verify(engineJoguinhoMock, times(0)).iniciar();
-	}
-
-	@Test
-	void quandoExecutarJogoDesejandoFinalizarNaSegundaIteracaoEntaoIniciarDeveSerChamadoUmaVezes() {
-		when(engineJoguinhoMock.getProximaAcao()).thenReturn(Acao.PARABENIZAR);
-		when(engineJoguinhoMock.desejaJogarNovamente()).thenReturn(true, false);
-
-		Joguinho joguinho = new Joguinho(engineJoguinhoMock);
-		joguinho.executar();
-
-		verify(engineJoguinhoMock, times(1)).iniciar();
-	}
-
-	@Test
-	void quandoExecutarJogoDesejandoFinalizarNaQuintaIteracaoEntaoIniciarDeveSerChamadoQuatroVezes() {
-		when(engineJoguinhoMock.getProximaAcao()).thenReturn(Acao.PARABENIZAR);
-		when(engineJoguinhoMock.desejaJogarNovamente()).thenReturn(true, true, true, true, false);
-
-		Joguinho joguinho = new Joguinho(engineJoguinhoMock);
-		joguinho.executar();
-
-		verify(engineJoguinhoMock, times(4)).iniciar();
-	}
-	
-	@Test
-	void quandoAcertarRespostaEntaoDeveParabenizar() {
-		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
-		final NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
-		final EngineJoguinho engine = new EngineJoguinho(noRaiz, viewMock);
-		final Joguinho joguinho = new Joguinho(engine);
-		
-		when(viewMock.perguntar(anyString())).thenReturn(true);
-		
-		joguinho.executar();
-		
-		verify(viewMock, times(1)).parabenizar();
-	}
-
-	
 	@Test
 	void quandoPerguntarRetornarVerdadeiroEntaoDeveRetornarNoVerdadeiro() {
 		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
@@ -222,7 +58,7 @@ class JoguinhoTest {
 		
 		verify(viewMock, times(1)).perguntar("O que você está pensando é um(a) bolo?");
 	}
-
+	
 	@Test
 	void quandoJogoCriarFilhoEntaoPerguntaNovaEntidadeDeveSerChamada() {
 		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
@@ -239,7 +75,7 @@ class JoguinhoTest {
 
 		verify(viewMock, times(1)).perguntarNovaEntidade();
 	}
-	
+
 	@Test
 	void quandoJogoCriarFilhoEntaoPerguntaNovaCaracteristicaDeveSerChamada() {
 		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
@@ -289,7 +125,7 @@ class JoguinhoTest {
 
 		verify(viewMock, times(1)).erroValidacao(anyString());
 	}
-	
+
 	@Test
 	void quandoJogoCriarFilhoSemEntidadeEntaoDeveMostrarErroValidacaoComMensagemCorreta() {
 		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
@@ -302,10 +138,9 @@ class JoguinhoTest {
 		
 		joguinho.executar();
 
-		
 		verify(viewMock, times(1)).erroValidacao("Não foi possivel criar filho: Entidade deve ser informada!");
 	}
-	
+
 	@Test
 	void quandoJogoCriarFilhoSemCaracteristicaEntaoDeveMostrarErroValidacao() {
 		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
@@ -336,7 +171,21 @@ class JoguinhoTest {
 		
 		joguinho.executar();
 
-		
 		verify(viewMock, times(1)).erroValidacao("Não foi possivel criar filho: Característica deve ser informada!");
 	}	
+	
+	@Test
+	void quandoJogarDuasVezesEntaoUsuarioDeveTerSidoParabenizadoDuasVezes() {
+		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
+		final NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
+		final EngineJoguinho engine = new EngineJoguinho(noRaiz, viewMock);
+		final Joguinho joguinho = new Joguinho(engine);
+		
+		when(viewMock.perguntar(anyString())).thenReturn(true);
+		when(viewMock.jogarNovamente()).thenReturn(true, false);
+		
+		joguinho.executar();
+		
+		verify(viewMock, times(2)).parabenizar();
+	}		
 }
