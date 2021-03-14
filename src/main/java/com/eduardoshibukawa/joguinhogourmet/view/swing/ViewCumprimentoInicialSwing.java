@@ -22,7 +22,7 @@ public class ViewCumprimentoInicialSwing implements ViewCumprimentoInicial {
 			);
 		JOptionPane.showMessageDialog(
 				null, 
-				"Pense em uma comida.", 
+				"Pense em uma prato que você gosta.", 
 				"Instruções", 
 				JOptionPane.INFORMATION_MESSAGE
 			);

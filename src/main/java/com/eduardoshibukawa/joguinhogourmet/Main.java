@@ -13,7 +13,7 @@ public class Main {
 				new NoCaracteristica(
 						"Massa", 
 						new NoEntidade("Lasanha"),
-						new NoEntidade("Bolo")
+						new NoEntidade("Bolo de chocolate")
 				);
 
 		final ViewJoguinho joguinhoView = new ViewJoguinhoSwing();

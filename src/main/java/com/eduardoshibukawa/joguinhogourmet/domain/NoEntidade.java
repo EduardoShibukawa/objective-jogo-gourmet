@@ -15,7 +15,7 @@ public class NoEntidade extends NoPergunta {
 	* @param entidade Entidade do nó exemplo: Bolo
 	*/
 	public NoEntidade(String entidade) {					
-		super(String.format("É um(a) %s?", entidade.toLowerCase()));
+		super(String.format("O que você está pensando é um(a) %s?", entidade.toLowerCase()));
 		this.entidade = entidade;
 	}
 	

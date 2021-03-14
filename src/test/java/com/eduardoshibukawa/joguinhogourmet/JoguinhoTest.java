@@ -205,7 +205,7 @@ class JoguinhoTest {
 		
 		joguinho.executar();
 		
-		verify(viewMock, times(1)).perguntar("É um(a) lasanha?");
+		verify(viewMock, times(1)).perguntar("O que você está pensando é um(a) lasanha?");
 	}
 
 			
@@ -220,7 +220,7 @@ class JoguinhoTest {
 		
 		joguinho.executar();
 		
-		verify(viewMock, times(1)).perguntar("É um(a) bolo?");
+		verify(viewMock, times(1)).perguntar("O que você está pensando é um(a) bolo?");
 	}
 
 	@Test
@@ -271,7 +271,7 @@ class JoguinhoTest {
 		
 		joguinho.executar();
 
-		verify(viewMock, times(1)).perguntar("É um(a) limão?");
+		verify(viewMock, times(1)).perguntar("O que você está pensando é um(a) limão?");
 		verify(viewMock, times(1)).parabenizar();
 	}
 	
