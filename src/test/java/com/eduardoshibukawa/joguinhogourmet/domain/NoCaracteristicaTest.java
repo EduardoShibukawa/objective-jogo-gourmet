@@ -11,6 +11,7 @@ class NoCaracteristicaTest {
 		NoCaracteristica no = new NoCaracteristica("Fruta", new NoEntidade("Limão"), new NoEntidade("Bolo"));
 		
 		assertEquals("Está pensando em algo que é um(a) fruta?", no.getPergunta());
-	}	
+	}
+	
 	
 }

@@ -178,9 +178,9 @@ class JoguinhoTest {
 
 		verify(engineJoguinhoMock, times(4)).iniciar();
 	}
-
+	
 	@Test
-	void happyDayLasanha() {
+	void quandoAcertarRespostaEntaoDeveParabenizar() {
 		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
 		final NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
 		final EngineJoguinho engine = new EngineJoguinho(noRaiz, viewMock);
@@ -192,9 +192,25 @@ class JoguinhoTest {
 		
 		verify(viewMock, times(1)).parabenizar();
 	}
+
 	
 	@Test
-	void happyDayBolo() {
+	void quandoPerguntarRetornarVerdadeiroEntaoDeveRetornarNoVerdadeiro() {
+		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
+		final NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
+		final EngineJoguinho engine = new EngineJoguinho(noRaiz, viewMock);
+		final Joguinho joguinho = new Joguinho(engine);
+		
+		when(viewMock.perguntar(anyString())).thenReturn(true);
+		
+		joguinho.executar();
+		
+		verify(viewMock, times(1)).perguntar("É um(a) lasanha?");
+	}
+
+			
+	@Test
+	void quandoPerguntarRetornarFalsoEntaoDeveRetornarNoFalso() {
 		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
 		final NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
 		final EngineJoguinho engine = new EngineJoguinho(noRaiz, viewMock);
@@ -204,23 +220,123 @@ class JoguinhoTest {
 		
 		joguinho.executar();
 		
-		verify(viewMock, times(1)).parabenizar();
+		verify(viewMock, times(1)).perguntar("É um(a) bolo?");
 	}
-	
+
 	@Test
-	void happyDayCriandoFilho() {
+	void quandoJogoCriarFilhoEntaoPerguntaNovaEntidadeDeveSerChamada() {
 		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
 		final NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
 		final EngineJoguinho engine = new EngineJoguinho(noRaiz, viewMock);
 		final Joguinho joguinho = new Joguinho(engine);
 		
-		when(viewMock.perguntar(anyString())).thenReturn(false, false, false, false, true);
+		when(viewMock.perguntar(anyString())).thenReturn(false, false, false, true);
 		when(viewMock.perguntarNovaEntidade()).thenReturn("Limão");
 		when(viewMock.perguntarNovaCaracteristica("Bolo", "Limão")).thenReturn("Fruta");
 		
+		
 		joguinho.executar();
+
+		verify(viewMock, times(1)).perguntarNovaEntidade();
+	}
+	
+	@Test
+	void quandoJogoCriarFilhoEntaoPerguntaNovaCaracteristicaDeveSerChamada() {
+		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
+		final NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
+		final EngineJoguinho engine = new EngineJoguinho(noRaiz, viewMock);
+		final Joguinho joguinho = new Joguinho(engine);
+		
+		when(viewMock.perguntar(anyString())).thenReturn(false, false, false, true);
+		when(viewMock.perguntarNovaEntidade()).thenReturn("Limão");
+		when(viewMock.perguntarNovaCaracteristica("Bolo", "Limão")).thenReturn("Fruta");
 		
 		
+		joguinho.executar();
+
+		verify(viewMock, times(1)).perguntarNovaEntidade();
+	}
+	
+	@Test
+	void quandoJogoCriarFilhoEntaoDeveExistirNaProximaIteracaoDoJogo() {
+		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
+		final NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
+		final EngineJoguinho engine = new EngineJoguinho(noRaiz, viewMock);
+		final Joguinho joguinho = new Joguinho(engine);
+		
+		when(viewMock.perguntar(anyString())).thenReturn(false, false, false, true);
+		when(viewMock.perguntarNovaEntidade()).thenReturn("Limão");
+		when(viewMock.perguntarNovaCaracteristica("Bolo", "Limão")).thenReturn("Fruta");
+		
+		
+		joguinho.executar();
+
+		verify(viewMock, times(1)).perguntar("É um(a) limão?");
 		verify(viewMock, times(1)).parabenizar();
+	}
+	
+	@Test
+	void quandoJogoCriarFilhoSemEntidadeEntaoDeveMostrarErroValidacao() {
+		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
+		final NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
+		final EngineJoguinho engine = new EngineJoguinho(noRaiz, viewMock);
+		final Joguinho joguinho = new Joguinho(engine);
+		
+		when(viewMock.perguntar(anyString())).thenReturn(false, false, true);
+		when(viewMock.perguntarNovaEntidade()).thenReturn("");
+		
+		joguinho.executar();
+
+		verify(viewMock, times(1)).erroValidacao(anyString());
+	}
+	
+	@Test
+	void quandoJogoCriarFilhoSemEntidadeEntaoDeveMostrarErroValidacaoComMensagemCorreta() {
+		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
+		final NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
+		final EngineJoguinho engine = new EngineJoguinho(noRaiz, viewMock);
+		final Joguinho joguinho = new Joguinho(engine);
+		
+		when(viewMock.perguntar(anyString())).thenReturn(false, false, true);
+		when(viewMock.perguntarNovaEntidade()).thenReturn("");
+		
+		joguinho.executar();
+
+		
+		verify(viewMock, times(1)).erroValidacao("Não foi possivel criar filho: Entidade deve ser informada!");
+	}
+	
+	@Test
+	void quandoJogoCriarFilhoSemCaracteristicaEntaoDeveMostrarErroValidacao() {
+		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
+		final NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
+		final EngineJoguinho engine = new EngineJoguinho(noRaiz, viewMock);
+		final Joguinho joguinho = new Joguinho(engine);
+		
+		when(viewMock.perguntar(anyString())).thenReturn(false, false, true);
+		when(viewMock.perguntarNovaEntidade()).thenReturn("Limão");
+		when(viewMock.perguntarNovaCaracteristica("Bolo", "Limão")).thenReturn("");
+		
+		joguinho.executar();
+
+		
+		verify(viewMock, times(1)).erroValidacao(anyString());
+	}
+	
+	@Test
+	void quandoJogoCriarFilhoSemCaracteristicaEntaoDeveMostrarErroValidacaoComMensagemCorreta() {
+		final ViewJoguinho viewMock = mock(ViewJoguinho.class);
+		final NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
+		final EngineJoguinho engine = new EngineJoguinho(noRaiz, viewMock);
+		final Joguinho joguinho = new Joguinho(engine);
+		
+		when(viewMock.perguntar(anyString())).thenReturn(false, false, true);
+		when(viewMock.perguntarNovaEntidade()).thenReturn("Limão");
+		when(viewMock.perguntarNovaCaracteristica("Bolo", "Limão")).thenReturn("");
+		
+		joguinho.executar();
+
+		
+		verify(viewMock, times(1)).erroValidacao("Não foi possivel criar filho: Característica deve ser informada!");
 	}	
 }

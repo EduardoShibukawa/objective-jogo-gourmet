@@ -4,6 +4,12 @@ import javax.swing.JOptionPane;
 
 import com.eduardoshibukawa.joguinhogourmet.view.ViewPerguntaJogarNovamente;
 
+/**
+* <h1> ViewPerguntaJogarNovamenteSwing </h1>
+* Implementação para visão em swing da interface
+* <p>
+* @ author Eduardo Shibukawa
+*/
 public class ViewPerguntaJogarNovamenteSwing implements ViewPerguntaJogarNovamente {
 	public boolean executar() {
 		int resultado = JOptionPane.showConfirmDialog(

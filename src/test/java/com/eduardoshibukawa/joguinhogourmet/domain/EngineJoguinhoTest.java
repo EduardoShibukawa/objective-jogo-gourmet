@@ -11,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.eduardoshibukawa.joguinhogourmet.domain.EngineJoguinho.Acao;
+import com.eduardoshibukawa.joguinhogourmet.domain.exception.CaracteristicaObrigatoriaException;
+import com.eduardoshibukawa.joguinhogourmet.domain.exception.EntidadeObrigatoriaException;
 import com.eduardoshibukawa.joguinhogourmet.view.ViewJoguinho;
 
 @ExtendWith(MockitoExtension.class)
@@ -72,6 +74,15 @@ class EngineJoguinhoTest {
 	}
 
 	@Test
+	void quandoErroValidacaoEntaoMetodoErroValidacaoDeveSerChamado() {
+		EngineJoguinho engine = new EngineJoguinho(noPerguntaMock, viewJoguinhoMock);
+
+		engine.erroValidacao("Erro");
+
+		verify(viewJoguinhoMock, times(1)).erroValidacao("Erro");
+	}
+
+	@Test
 	void quandoCriarFilhoEntaoMetodoPerguntaNovaCaracteristicaEntidadeDeveSerChamado() {
 		NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
 
@@ -86,7 +97,68 @@ class EngineJoguinhoTest {
 		verify(viewJoguinhoMock, times(1)).perguntarNovaEntidade();
 		verify(viewJoguinhoMock, times(1)).perguntarNovaCaracteristica(anyString(), anyString());
 	}
+
+	@Test
+	void quandoCriarFilhoComEntidadeNullEntaoDeveOcorrerErroEntidadeObrigatoriaException() {
+		NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
+
+		when(viewJoguinhoMock.perguntarNovaEntidade()).thenReturn(null);
+		
+		EngineJoguinho engine = new EngineJoguinho(noRaiz, viewJoguinhoMock);
+
+		engine.avancar();
+
+		assertThrows(EntidadeObrigatoriaException.class, () -> {
+			engine.criarFilho();
+		});
+	}
+
+	@Test
+	void quandoCriarFilhoComEntidadeVaziaEntaoDeveOcorrerErroEntidadeObrigatoriaException() {
+		NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
+
+		when(viewJoguinhoMock.perguntarNovaEntidade()).thenReturn("");
+		
+		EngineJoguinho engine = new EngineJoguinho(noRaiz, viewJoguinhoMock);
+
+		engine.avancar();
+
+		assertThrows(EntidadeObrigatoriaException.class, () -> {
+			engine.criarFilho();
+		});
+	}
 	
+	@Test
+	void quandoCriarFilhoComCaracteristicaNullEntaoDeveOcorrerErroCaracteristicaObrigatoriaException() {
+		NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
+
+		when(viewJoguinhoMock.perguntarNovaEntidade()).thenReturn("Limão");
+		when(viewJoguinhoMock.perguntarNovaCaracteristica(anyString(), anyString())).thenReturn(null);
+		
+		EngineJoguinho engine = new EngineJoguinho(noRaiz, viewJoguinhoMock);
+
+		engine.avancar();
+
+		assertThrows(CaracteristicaObrigatoriaException.class, () -> {
+			engine.criarFilho();
+		});
+	}
+
+	@Test
+	void quandoCriarFilhoComCaracteristicaVaziaEntaoDeveOcorrerErroCaracteristicaObrigatoriaException() {
+		NoCaracteristica noRaiz = new NoCaracteristica("Massa", new NoEntidade("Lasanha"), new NoEntidade("Bolo"));
+
+		when(viewJoguinhoMock.perguntarNovaEntidade()).thenReturn("Limão");
+		when(viewJoguinhoMock.perguntarNovaCaracteristica(anyString(), anyString())).thenReturn("");
+		
+		EngineJoguinho engine = new EngineJoguinho(noRaiz, viewJoguinhoMock);
+
+		engine.avancar();
+
+		assertThrows(CaracteristicaObrigatoriaException.class, () -> {
+			engine.criarFilho();
+		});
+	}
 	
 	@Test
 	void proximaAcaoDeveSerAvancarCasoPossuirFilho() {

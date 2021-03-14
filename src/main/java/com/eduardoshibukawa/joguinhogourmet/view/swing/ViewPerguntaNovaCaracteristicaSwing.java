@@ -4,6 +4,12 @@ import javax.swing.JOptionPane;
 
 import com.eduardoshibukawa.joguinhogourmet.view.ViewPerguntaNovaCaracteristica;
 
+/**
+* <h1> ViewPerguntaNovaEntidadeSwing </h1>
+* Implementação para visão em swing da interface
+* <p>
+* @ author Eduardo Shibukawa
+*/
 public class ViewPerguntaNovaCaracteristicaSwing implements ViewPerguntaNovaCaracteristica {
 	
 	@Override

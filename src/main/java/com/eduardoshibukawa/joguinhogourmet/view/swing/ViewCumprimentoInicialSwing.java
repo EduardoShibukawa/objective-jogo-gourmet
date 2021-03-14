@@ -4,6 +4,12 @@ import javax.swing.JOptionPane;
 
 import com.eduardoshibukawa.joguinhogourmet.view.ViewCumprimentoInicial;
 
+/**
+* <h1> ViewCumprimentoInicialSwing </h1>
+* Implementação para visão em swing da interface
+* <p>
+* @ author Eduardo Shibukawa
+*/
 public class ViewCumprimentoInicialSwing implements ViewCumprimentoInicial {
 	
 	@Override

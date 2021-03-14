@@ -4,6 +4,12 @@ import javax.swing.JOptionPane;
 
 import com.eduardoshibukawa.joguinhogourmet.view.ViewPergunta;
 
+/**
+* <h1> ViewPerguntaSwing </h1>
+* Implementação para visão em swing da interface
+* <p>
+* @ author Eduardo Shibukawa
+*/
 public class ViewPerguntaSwing implements ViewPergunta {
 
 	@Override

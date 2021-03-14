@@ -2,8 +2,9 @@ package com.eduardoshibukawa.joguinhogourmet;
 
 import com.eduardoshibukawa.joguinhogourmet.domain.EngineJoguinho;
 import com.eduardoshibukawa.joguinhogourmet.domain.EngineJoguinho.Acao;
+import com.eduardoshibukawa.joguinhogourmet.domain.exception.ErroValidacaoException;
 
-final public class Joguinho {
+public class Joguinho {
 	
 	final private EngineJoguinho engineJoguinho;
 	
@@ -39,7 +40,15 @@ final public class Joguinho {
 			break;
 			
 		case CRIAR_FILHO:
-			engineJoguinho.criarFilho();
+			try {
+				engineJoguinho.criarFilho();
+			} catch (ErroValidacaoException e) {
+				final String mensagemErroValidacao 
+					= String.format("Não foi possivel criar filho: %s", e.getMessage());
+				
+				this.engineJoguinho.erroValidacao(mensagemErroValidacao);
+			}
+			
 			this.engineJoguinho.iniciar();		
 			break;
 		}
