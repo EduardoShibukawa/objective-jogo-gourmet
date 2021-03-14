@@ -9,13 +9,6 @@ import com.eduardoshibukawa.joguinhogourmet.view.ViewJoguinho;
 * @ author Eduardo Shibukawa
 */
 public class EngineJoguinho {
-	/**
-	* <h1> EngineJoguinho.Acao </h1>
-	* <p>
-	* Classe que simboliza a próxima ação da engine
-	* <p>
-	* Valores: AVANCAR, CRIAR_FILHO, PARABENIZAR
-	**/	
 	private enum Acao {
 		AVANCAR, CRIAR_FILHO, PARABENIZAR
 	}
